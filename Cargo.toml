@@ -1,0 +1,15 @@
+[package]
+name = "fhrs"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "fhrs"
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0.99"
+ndarray = { version = "0.16.1", features = ["rayon"] }
+numpy = "0.26.0"
+pyo3 = { version = "0.26.0", features = ["anyhow"] }
+rayon = "1.11.0"
