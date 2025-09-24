@@ -1,6 +1,6 @@
 use anyhow::Result;
 use ndarray::{Array1, ArrayView1};
-use numpy::{IntoPyArray, PyArray1, PyReadonlyArray1};
+use numpy::{IntoPyArray, PyReadonlyArray1};
 use pyo3::prelude::{Bound, *};
 use rayon::prelude::*;
 use std::ops::Sub;
@@ -41,6 +41,51 @@ fn rh1(x: ArrayView1<f64>, bins: usize, range: (f64, f64)) -> Result<Array1<usiz
         ))
 }
 
+fn rh1w(
+    x: ArrayView1<f64>,
+    w: ArrayView1<f64>,
+    bins: usize,
+    range: (f64, f64),
+) -> Result<Array1<f64>> {
+    anyhow::ensure!(
+        x.len() == w.len(),
+        "x and w arrays must have the same length"
+    );
+
+    let (xmin, xmax) = range;
+    let norm = bins as f64 / (xmax - xmin);
+    let chunk_size = (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
+
+    let x_slice = x
+        .as_slice()
+        .ok_or(anyhow::anyhow!("Can't slice input array x"))?;
+    let w_slice = w
+        .as_slice()
+        .ok_or(anyhow::anyhow!("Can't slice input array w"))?;
+
+    Ok(x_slice
+        .par_chunks(chunk_size)
+        .zip(w_slice.par_chunks(chunk_size))
+        .map(|(x_chunk, w_chunk)| {
+            let mut local_hist = Array1::<f64>::zeros(bins);
+            for (&value, &weight) in x_chunk.iter().zip(w_chunk.iter()) {
+                if value >= xmin && value < xmax {
+                    let bin_index = calc_index(value, xmin, norm);
+                    let bin_index = bin_index.min(bins - 1);
+                    local_hist[bin_index] += weight;
+                }
+            }
+            local_hist
+        })
+        .reduce(
+            || Array1::<f64>::zeros(bins),
+            |mut acc, local_hist| {
+                acc += &local_hist;
+                acc
+            },
+        ))
+}
+
 /// Fastest Histograms Routines in the South
 ///
 /// This is a simple Python module with histogramming routines
@@ -50,18 +95,29 @@ mod fhrs {
 
     use super::*;
 
-    /// Calculate a histogram
+    /// Calculate a histogram with optional weights
     #[pyfunction]
-    #[pyo3(signature = (x, bins, range))]
+    #[pyo3(signature = (x, bins, range, weights=None))]
     fn histogram<'py>(
         py: Python<'py>,
         x: PyReadonlyArray1<'py, f64>,
         bins: usize,
         range: (f64, f64),
-    ) -> PyResult<Bound<'py, PyArray1<usize>>> {
+        weights: Option<PyReadonlyArray1<'py, f64>>,
+    ) -> PyResult<Py<PyAny>> {
         let x = x.as_array();
-        let h = py.detach(|| rh1(x, bins, range))?;
-        Ok(h.into_pyarray(py))
+
+        match weights {
+            Some(w) => {
+                let w = w.as_array();
+                let h = py.detach(|| rh1w(x, w, bins, range))?;
+                Ok(h.into_pyarray(py).into())
+            }
+            None => {
+                let h = py.detach(|| rh1(x, bins, range))?;
+                Ok(h.into_pyarray(py).into())
+            }
+        }
     }
 
     #[pymodule_init]
