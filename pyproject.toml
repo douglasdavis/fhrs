@@ -9,7 +9,6 @@ requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
     "numpy>=2.0.0",
@@ -21,6 +20,7 @@ features = ["pyo3/extension-module"]
 [dependency-groups]
 dev = [
     "maturin>=1.9.4",
+    "pygram11>=0.13.3",
     "pyright>=1.1.405",
     "pytest>=8.4.2",
     "ruff>=0.13.1",

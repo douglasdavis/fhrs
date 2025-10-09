@@ -22,6 +22,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "maturin" },
+    { name = "pygram11" },
     { name = "pyright" },
     { name = "pytest" },
     { name = "ruff" },
@@ -34,6 +35,7 @@ requires-dist = [{ name = "numpy", specifier = ">=2.0.0" }]
 [package.metadata.requires-dev]
 dev = [
     { name = "maturin", specifier = ">=1.9.4" },
+    { name = "pygram11", specifier = ">=0.13.3" },
     { name = "pyright", specifier = ">=1.1.405" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "ruff", specifier = ">=0.13.1" },
@@ -185,6 +187,57 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887", size = 4968631, upload-time = "2025-06-21T13:39:12.283Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b", size = 1225217, upload-time = "2025-06-21T13:39:07.939Z" },
+]
+
+[[package]]
+name = "pygram11"
+version = "0.13.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c4/b5/c087d601eedc60e105bf6c7ce3c5b2a74b5717e388aa68239dc3fc0d9025/pygram11-0.13.3.tar.gz", hash = "sha256:09d24ad001e03774f60d0084649a8306b112fb1891cc2d828570fa00777273d8", size = 1333586, upload-time = "2025-08-28T19:51:17.199Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9a/c6/d4ccceb48896ed0508dc569d67d0729d05d51e552a0b07b1f5e22ab1341a/pygram11-0.13.3-cp311-cp311-macosx_13_0_x86_64.whl", hash = "sha256:e0014e3642c09777b6f640d351ac4ea0a84675b78af2b40798df90f63b615559", size = 791320, upload-time = "2025-08-28T20:00:24.911Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/b9/bc259a4385598bd27386a15ce451ca4ac8ccc7a9f9a171348b48e5ee4ed0/pygram11-0.13.3-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:14d84a428ccf627f75598f2a0d2b822d9bfcf8f90e91eead6e4ef76bd5af475c", size = 662914, upload-time = "2025-08-28T19:54:25.661Z" },
+    { url = "https://files.pythonhosted.org/packages/06/c3/f92dcb9154544e0bc26da4d260b8800cc56ee0001cfcc1492363cde2f85f/pygram11-0.13.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:ecc52617e77de40813156aca1063759c85624dcfe8b2bbb2f00836dbf0652c98", size = 497418, upload-time = "2025-08-28T20:29:01.081Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/b5/bb972446adfebdbe9b0e86e12d51865b7436e43750b75b2a6ca5933267c6/pygram11-0.13.3-cp311-cp311-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ba175c70e86df1db0d34f37c99018ec615c619334a2fc1c561127a7d8fde3044", size = 482016, upload-time = "2025-08-28T19:59:34.934Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/81/86e214b94850a6374955a997f8dfec4f0ef68706cc7c9aab5e06a6cc61fb/pygram11-0.13.3-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:f6e306bc12d9139f64d5c7067dbfbe95356e21f0fd4efc87f78400843fb63bd7", size = 1521306, upload-time = "2025-08-28T19:59:36.231Z" },
+    { url = "https://files.pythonhosted.org/packages/c6/47/7f2f11be9451306ac851f453ddb420082b128034540f65fd55b2ca9c4c92/pygram11-0.13.3-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:bd96702954212146d71ad45b62feb3a1d8d9542f08a373d4518acca842810a57", size = 1684849, upload-time = "2025-08-28T20:29:02.819Z" },
+    { url = "https://files.pythonhosted.org/packages/02/97/4d992939cfccea08f3ad2cb08d8d9669bc8f7cc80144d3b3ec723a0abdbd/pygram11-0.13.3-cp311-cp311-win32.whl", hash = "sha256:2018e24f0903a0a2eb288b1d3f2a677dbea1a7a4c038a5fc157f2ea3de975f5b", size = 305879, upload-time = "2025-08-28T20:07:32.956Z" },
+    { url = "https://files.pythonhosted.org/packages/08/bc/edfc86e07dc34987a168addd994203eb80d95b1f0e7956318a537a1f9c6c/pygram11-0.13.3-cp311-cp311-win_amd64.whl", hash = "sha256:307dc3f04de92689908ea6b9d6d84c48dfeda0b61af58e91022cb34b37d2f960", size = 436523, upload-time = "2025-08-28T20:07:34.169Z" },
+    { url = "https://files.pythonhosted.org/packages/5f/10/248e3408d84f12288df5042ab550268c6302313b881abfd02288b0c87339/pygram11-0.13.3-cp312-cp312-macosx_13_0_x86_64.whl", hash = "sha256:01e8c30066c654e134fd30687696ee80cf7d7456071848edeada003537e12f31", size = 796260, upload-time = "2025-08-28T20:00:26.218Z" },
+    { url = "https://files.pythonhosted.org/packages/91/83/c405008e0305959ef9cc0b967ae6248cf0401688c597be3951edb20c001e/pygram11-0.13.3-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:8aaf761801f26302d76882546b4d3b014c512482b2a51b49271a71d95344557d", size = 665498, upload-time = "2025-08-28T19:54:27.205Z" },
+    { url = "https://files.pythonhosted.org/packages/5f/c1/f6faf088fec6b1a22e92872834e84af22226dec7e57403d56814a9353464/pygram11-0.13.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:1bf6b46877fe1bb131a21c733aa643ad80e9c8064bf71703c8d61646df75980f", size = 485534, upload-time = "2025-08-28T20:29:04.431Z" },
+    { url = "https://files.pythonhosted.org/packages/41/ab/f8f44b0195c05dc5e07961a282cd6700d163df688457f17c2bfba326fe0b/pygram11-0.13.3-cp312-cp312-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:60f5bb714d3876216cf4523ac91e1cd231b75785b679f9e199e6ac2bbfdd2fd6", size = 480760, upload-time = "2025-08-28T19:59:37.616Z" },
+    { url = "https://files.pythonhosted.org/packages/53/b9/fc2958f7eb71c2626c5ada57f3c8013814aa1b5d61892347970c9c4d084e/pygram11-0.13.3-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:a8d50cf94978a7674ca6887079e64de95a84ed4daff67aad4edf215d8fc3c42e", size = 1527215, upload-time = "2025-08-28T19:59:39.082Z" },
+    { url = "https://files.pythonhosted.org/packages/68/61/f7822579a47913e3086482f25c70d98195e36918c92527bdff7d2162aa45/pygram11-0.13.3-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:f25a834dda16b2d85617eda311d0fa04d718808da15e03586d1c8363b0505772", size = 1691770, upload-time = "2025-08-28T20:29:06.035Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/71/c10b21b906153884760bf3bcc40d4998a6eac546ab533a3014247e12d195/pygram11-0.13.3-cp312-cp312-win32.whl", hash = "sha256:26ac24c05c49f5247f780c25a9ef851b77936088e910fb557a2664f0bef90fc6", size = 313984, upload-time = "2025-08-28T20:07:35.782Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/c5/1005d79d169a9d29926b4db4dff6f3a981faad7e2897f46d8a3ae3708c86/pygram11-0.13.3-cp312-cp312-win_amd64.whl", hash = "sha256:752969c9e25d81848d71ab1fee874afd585717c8dfde9d5ff2cb22c2dad8f132", size = 438514, upload-time = "2025-08-28T20:07:36.891Z" },
+    { url = "https://files.pythonhosted.org/packages/19/d9/052d9511d263753e4caef74296c4ccebb2c1a08ac5526903c00a8763a4cf/pygram11-0.13.3-cp313-cp313-macosx_13_0_x86_64.whl", hash = "sha256:e63a0d24b6bf70526d76513d235d9407eb7a818baf2cfe5c2affbcca079a310b", size = 796241, upload-time = "2025-08-28T20:00:27.612Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/5c/844c5bcd5fd150043056df38becc16839bb365f8576eb1fab48252abce11/pygram11-0.13.3-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:b648078ea6c10a1c0e1cb6cb9588fe4d8b99e9e321bb4442766ad778af56375c", size = 665574, upload-time = "2025-08-28T19:54:28.618Z" },
+    { url = "https://files.pythonhosted.org/packages/45/9a/54fcd5199491b17314aca64a88299c45fa841394183fdfca61863e515888/pygram11-0.13.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:928481fb25ab4399d637c46eb6c04421806793eb467bbc8db2d39a65bb7d5fd2", size = 486609, upload-time = "2025-08-28T20:29:08.84Z" },
+    { url = "https://files.pythonhosted.org/packages/88/64/a83cf221f964af693eff236532149bc3b3d3cd502f12f8af90b05d47b903/pygram11-0.13.3-cp313-cp313-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ae31f5a98d85ea2eb115af086affb0dad19232bdb1e6b2eef5c7de30faa13b9c", size = 478562, upload-time = "2025-08-28T19:59:40.71Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/5c/19ca62c7394941563e8829aebed3961c75a1164ad4ef5680443a018b1e92/pygram11-0.13.3-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:03f9a6848c7b301f73ddd9d5b527f29d98b01cc0f705d109b0448f3a9dd4cc25", size = 1526611, upload-time = "2025-08-28T19:59:42.258Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/6c/00bca2738c3edc91616a5b64dce29fc83113e6444e2bc620efca75b583d0/pygram11-0.13.3-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:12ec9b6b47ddd82c134da55de2828b1c1906df140c28832a707f5ad6277d55cf", size = 1692928, upload-time = "2025-08-28T20:29:09.918Z" },
+    { url = "https://files.pythonhosted.org/packages/76/6f/9a92bd16ec00851d79c7461915884efff266fb7892df3a5537ce8f2c9cee/pygram11-0.13.3-cp313-cp313-win32.whl", hash = "sha256:c5d54655bc62b37473a22525bacc89f389d5f50a95e4e947998b6a11ec489973", size = 314016, upload-time = "2025-08-28T20:07:38.063Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/11/5c41d7e65f49667ca21d81f59d0cf6c46f78e30e5263812a9a9fe023c835/pygram11-0.13.3-cp313-cp313-win_amd64.whl", hash = "sha256:e92c7ddfb0db3fe7867339985596a47a863861245b707eaa3f625a1ae5f0790e", size = 438537, upload-time = "2025-08-28T20:07:39.207Z" },
+    { url = "https://files.pythonhosted.org/packages/86/8b/3cd9d72aa2d63009dd6411ee13a5c62c6fafbc86d625c67ab0c9911ec476/pygram11-0.13.3-cp314-cp314-macosx_13_0_x86_64.whl", hash = "sha256:b001b7e6b7e2a7b81f1c1e76875c99242491144720cddd92455b8bc58d9f6b28", size = 795574, upload-time = "2025-08-28T20:00:29.151Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/f1/ecbc17bfd737bd23ad589d9a771a650d33db0aa87306d5b1f6f28a12ab5a/pygram11-0.13.3-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:30b04a1873dd43fb25f071918c4f5a2d6efd2ca870bcc2f21edb93d64f08ff10", size = 666682, upload-time = "2025-08-28T19:54:30.126Z" },
+    { url = "https://files.pythonhosted.org/packages/77/5e/0e43a86ce01ef1ea872eb1480b5c8e52ab61c044445820c3f09877ed5a0c/pygram11-0.13.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:674125acf8a7dbe4e799b59828d2906b9005012c476d885986a5744a59abe996", size = 487443, upload-time = "2025-08-28T20:29:11.088Z" },
+    { url = "https://files.pythonhosted.org/packages/b4/d9/fffbff4b5909a968d0f2707795c04a50c4419a007fa8a81b293121d52d61/pygram11-0.13.3-cp314-cp314-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0107b1d342e746dacd10019ad5c0f75616367e408ccf976be97eb412c6651e13", size = 482988, upload-time = "2025-08-28T19:59:43.353Z" },
+    { url = "https://files.pythonhosted.org/packages/dc/c0/879ed5fa41c3b1ea2008b47f9a65be419959a65308e349b557f7c09a6582/pygram11-0.13.3-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:f5fa74b0ccf453997a792d030f33110e159ed6d987e0397086ca34800a84c01f", size = 1528485, upload-time = "2025-08-28T19:59:45.053Z" },
+    { url = "https://files.pythonhosted.org/packages/30/00/a7335617b5930cd7b93e7a4b19ec3ec24babc73529ed75896a55e0a64e24/pygram11-0.13.3-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:76dc6072d2ac4a15a19f4e7c82e5071bc2e02845a62308a5182ed41d056fb0cb", size = 1694376, upload-time = "2025-08-28T20:29:12.178Z" },
+    { url = "https://files.pythonhosted.org/packages/4a/e2/5617d0946b983001157b5850bcd2a11743db12dcc3a7f837187173035fd0/pygram11-0.13.3-cp314-cp314-win32.whl", hash = "sha256:70688f1620e7e75434fd0bdaf7c58ec3893585825acdca5381a5dfee0a667321", size = 318750, upload-time = "2025-08-28T20:07:40.418Z" },
+    { url = "https://files.pythonhosted.org/packages/43/59/9f0d2e63a7e09e56a6e806c1a30d390c99d116a5330d1dd551f861fe4500/pygram11-0.13.3-cp314-cp314-win_amd64.whl", hash = "sha256:4fb0b26032d0b08bbe83f53c63c9f22e28da7d981de42a28639ce534eec21c01", size = 446469, upload-time = "2025-08-28T20:07:41.874Z" },
+    { url = "https://files.pythonhosted.org/packages/ca/f7/cc811e869e0fd2f2ca55290fb1ea844e4d9f4c06c68a29c5ab22c310f103/pygram11-0.13.3-cp314-cp314t-macosx_13_0_x86_64.whl", hash = "sha256:2f1686bc887edfe2a5a1401dee83ed8782d07dbd657566f911af629e56da4ba3", size = 816842, upload-time = "2025-08-28T20:00:31.119Z" },
+    { url = "https://files.pythonhosted.org/packages/8d/05/d61eb07aa3c4a5a3db9d298c1d1ede6f119083fdba8d3e0f51444d768d10/pygram11-0.13.3-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:0cb2f5f050566b3bf46f9e8509438750809f0c4990efa626e1874abe7d69b836", size = 682770, upload-time = "2025-08-28T19:54:31.863Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/5a/b16ae4f9e3eff35dfe8db8f85fa6440a37d1a5b3ae79bc3962dc7f18d633/pygram11-0.13.3-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:936b1a68712499a3f82f363156265f22472e606433d7b70c7ac5ee2feb4f03fc", size = 507115, upload-time = "2025-08-28T20:29:13.754Z" },
+    { url = "https://files.pythonhosted.org/packages/44/71/85e4896bb2054e00311623e862eae6c3f962b27601113acfd94ea469df44/pygram11-0.13.3-cp314-cp314t-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:28799fd9a35ca6d5ddeb7dabb6402bb52f0ddfe56d3e3b66a02f36e4bb299efc", size = 489356, upload-time = "2025-08-28T19:59:46.433Z" },
+    { url = "https://files.pythonhosted.org/packages/db/b6/80969ff5c62e58046e036d2685f6a48fba38ecd35ed241f499a88f998a60/pygram11-0.13.3-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:a057142965b2a1fd551a7d4572285563aabf7822cbd9220e341ef82871dfa336", size = 1532320, upload-time = "2025-08-28T19:59:47.53Z" },
+    { url = "https://files.pythonhosted.org/packages/09/2a/9e5865d85407579ce03b0f32b5e2def286e6a816faaf317c7abdc5edc21f/pygram11-0.13.3-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:a2e81808ee0c010b9107972433b9e4fa09a9e1d2237a2ed68adf619b33221ad1", size = 1694171, upload-time = "2025-08-28T20:29:14.831Z" },
+    { url = "https://files.pythonhosted.org/packages/be/4f/aa5832bb8c8409c532b89586e71077d43a7324cbee8a42bef9b87ccd54b8/pygram11-0.13.3-cp314-cp314t-win32.whl", hash = "sha256:301b07c4dcf6226a1d37c7507b24a9e22fa7f98a1f37fdb038f71d0f63d93710", size = 353968, upload-time = "2025-08-28T20:07:42.991Z" },
+    { url = "https://files.pythonhosted.org/packages/30/35/2cdab8073a4ec658b107c36200a0e2b63ab0c7c57e584f615829f9d1ca18/pygram11-0.13.3-cp314-cp314t-win_amd64.whl", hash = "sha256:89e59ae0db5c6bcab15c381eebefb63e180776c02cb296d1209357e72c6e3c0b", size = 517952, upload-time = "2025-08-28T20:07:44.031Z" },
 ]
 
 [[package]]
