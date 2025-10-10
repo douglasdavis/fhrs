@@ -3,17 +3,9 @@ use ndarray::{Array1, Array2, ArrayView1};
 use numpy::{IntoPyArray, PyReadonlyArray1};
 use pyo3::prelude::{Bound, *};
 use rayon::prelude::*;
-use std::ops::Sub;
 
 static CURRENT_NUM_THREADS: std::sync::OnceLock<usize> =
     std::sync::OnceLock::new();
-
-fn calc_index<T>(value: T, xmin: T, norm: f64) -> usize
-where
-    T: Sub<Output = T> + Into<f64>,
-{
-    ((value - xmin).into() * norm) as usize
-}
 
 fn rh1(
     x: ArrayView1<f64>,
@@ -31,7 +23,7 @@ fn rh1(
             let mut local_hist = Array1::<usize>::zeros(bins);
             for &value in chunk {
                 if value >= xmin && value < xmax {
-                    let bin_index = calc_index(value, xmin, norm);
+                    let bin_index = ((value - xmin) * norm) as usize;
                     let bin_index = bin_index.min(bins - 1);
                     local_hist[bin_index] += 1;
                 }
@@ -81,7 +73,8 @@ fn rh1v(
                             local_hist[idx] += 1;
                         }
                     }
-                    // Err for not found index, gives index of 1 higher (see
+                    // Err for not found index, gives index of 1
+                    // higher (see
                     // binary_search_by docs)
                     Err(idx) => {
                         // between bins; use
@@ -137,7 +130,7 @@ fn rh1vw(
         .par_chunks(chunk_size)
         .zip_eq(w_slice.par_chunks(chunk_size))
         .map(|(x_chunk, w_chunk)| {
-            let mut local_hist = Array2::<f64>::zeros((2, nbins));
+            let mut local_hist = Array2::<f64>::zeros((nbins, 2));
             for (&value, &weight) in
                 x_chunk.iter().zip(w_chunk.iter())
             {
@@ -147,14 +140,14 @@ fn rh1vw(
                 }) {
                     Ok(idx) => {
                         if idx < nbins {
-                            local_hist[[0, idx]] += weight;
-                            local_hist[[1, idx]] += weight * weight;
+                            local_hist[[idx, 0]] += weight;
+                            local_hist[[idx, 1]] += weight * weight;
                         }
                     }
                     Err(idx) => {
                         if idx > 0 && idx <= nbins {
-                            local_hist[[0, idx - 1]] += weight;
-                            local_hist[[1, idx - 1]] +=
+                            local_hist[[idx - 1, 0]] += weight;
+                            local_hist[[idx - 1, 1]] +=
                                 weight * weight;
                         }
                     }
@@ -163,7 +156,7 @@ fn rh1vw(
             local_hist
         })
         .reduce(
-            || Array2::<f64>::zeros((2, nbins)),
+            || Array2::<f64>::zeros((nbins, 2)),
             |mut acc, local_hist| {
                 acc += &local_hist;
                 acc
@@ -194,28 +187,25 @@ fn rh1w(
         .as_slice()
         .ok_or(anyhow::anyhow!("Can't slice input array w"))?;
 
-    // we're going to return a 2D array where the 0th dimension
-    // is size 2; the first dimension is for the counts and
-    // the second is for the variances.
     Ok(x_slice
         .par_chunks(chunk_size)
         .zip_eq(w_slice.par_chunks(chunk_size))
         .map(|(x_chunk, w_chunk)| {
-            let mut local_hist = Array2::<f64>::zeros((2, bins));
+            let mut local_hist = Array2::<f64>::zeros((bins, 2));
             for (&value, &weight) in
                 x_chunk.iter().zip(w_chunk.iter())
             {
                 if value >= xmin && value < xmax {
-                    let bin_index = calc_index(value, xmin, norm);
+                    let bin_index = ((value - xmin) * norm) as usize;
                     let bin_index = bin_index.min(bins - 1);
-                    local_hist[[0, bin_index]] += weight;
-                    local_hist[[1, bin_index]] += weight * weight;
+                    local_hist[[bin_index, 0]] += weight;
+                    local_hist[[bin_index, 1]] += weight * weight;
                 }
             }
             local_hist
         })
         .reduce(
-            || Array2::<f64>::zeros((2, bins)),
+            || Array2::<f64>::zeros((bins, 2)),
             |mut acc, local_hist| {
                 acc += &local_hist;
                 acc
