@@ -14,8 +14,7 @@ fn rh1(
 ) -> Result<Array1<usize>> {
     let (xmin, xmax) = range;
     let norm = bins as f64 / (xmax - xmin);
-    let chunk_size =
-        (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
+    let chunk_size = (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
     Ok(x.as_slice()
         .ok_or(anyhow::anyhow!("Can't slice input array {x:?}"))?
         .par_chunks(chunk_size)
@@ -39,18 +38,14 @@ fn rh1(
         ))
 }
 
-fn rh1v(
-    x: ArrayView1<f64>,
-    edges: ArrayView1<f64>,
-) -> Result<Array1<usize>> {
+fn rh1v(x: ArrayView1<f64>, edges: ArrayView1<f64>) -> Result<Array1<usize>> {
     anyhow::ensure!(
         edges.len() >= 2,
         "edges array must have at least 2 elements"
     );
 
     let nbins = edges.len() - 1;
-    let chunk_size =
-        (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
+    let chunk_size = (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
 
     let edges_slice = edges
         .as_slice()
@@ -110,8 +105,7 @@ fn rh1vw(
     );
 
     let nbins = edges.len() - 1;
-    let chunk_size =
-        (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
+    let chunk_size = (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
 
     let edges_slice = edges
         .as_slice()
@@ -131,9 +125,7 @@ fn rh1vw(
         .zip_eq(w_slice.par_chunks(chunk_size))
         .map(|(x_chunk, w_chunk)| {
             let mut local_hist = Array2::<f64>::zeros((nbins, 2));
-            for (&value, &weight) in
-                x_chunk.iter().zip(w_chunk.iter())
-            {
+            for (&value, &weight) in x_chunk.iter().zip(w_chunk.iter()) {
                 match edges_slice.binary_search_by(|edge| {
                     edge.partial_cmp(&value)
                         .unwrap_or(std::cmp::Ordering::Less)
@@ -147,8 +139,7 @@ fn rh1vw(
                     Err(idx) => {
                         if idx > 0 && idx <= nbins {
                             local_hist[[idx - 1, 0]] += weight;
-                            local_hist[[idx - 1, 1]] +=
-                                weight * weight;
+                            local_hist[[idx - 1, 1]] += weight * weight;
                         }
                     }
                 }
@@ -177,8 +168,7 @@ fn rh1w(
 
     let (xmin, xmax) = range;
     let norm = bins as f64 / (xmax - xmin);
-    let chunk_size =
-        (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
+    let chunk_size = (x.len() / CURRENT_NUM_THREADS.get().unwrap()).max(1000);
 
     let x_slice = x
         .as_slice()
@@ -192,9 +182,7 @@ fn rh1w(
         .zip_eq(w_slice.par_chunks(chunk_size))
         .map(|(x_chunk, w_chunk)| {
             let mut local_hist = Array2::<f64>::zeros((bins, 2));
-            for (&value, &weight) in
-                x_chunk.iter().zip(w_chunk.iter())
-            {
+            for (&value, &weight) in x_chunk.iter().zip(w_chunk.iter()) {
                 if value >= xmin && value < xmax {
                     let bin_index = ((value - xmin) * norm) as usize;
                     let bin_index = bin_index.min(bins - 1);
