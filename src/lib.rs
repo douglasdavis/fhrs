@@ -23,7 +23,6 @@ fn rh1(
             for &value in chunk {
                 if value >= xmin && value < xmax {
                     let bin_index = ((value - xmin) * norm) as usize;
-                    let bin_index = bin_index.min(bins - 1);
                     local_hist[bin_index] += 1;
                 }
             }
@@ -185,7 +184,6 @@ fn rh1w(
             for (&value, &weight) in x_chunk.iter().zip(w_chunk.iter()) {
                 if value >= xmin && value < xmax {
                     let bin_index = ((value - xmin) * norm) as usize;
-                    let bin_index = bin_index.min(bins - 1);
                     local_hist[[bin_index, 0]] += weight;
                     local_hist[[bin_index, 1]] += weight * weight;
                 }
