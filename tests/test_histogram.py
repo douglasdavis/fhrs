@@ -1,7 +1,7 @@
-import numpy as np
-from numpy.testing import assert_allclose, assert_equal
 import fhrs
+import numpy as np
 import pygram11
+from numpy.testing import assert_allclose, assert_equal
 
 
 def test_1d_fixed():
