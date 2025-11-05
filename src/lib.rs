@@ -203,7 +203,7 @@ fn rh1w(
 ///
 /// This is a simple Python module with histogramming
 /// routines accelerated with rayon.
-#[pymodule]
+#[pymodule(gil_used = false)]
 mod fhrs {
 
     use super::*;
