@@ -12,15 +12,16 @@ ndarray, and rayon.
 - Avoid useless comments; write brief comments if necessary.
 - Keep performance in mind; this projects wants to provide very fast
   histogramming routines with low overhead. Avoid costly copies, avoid
-  unncessary work.
+  unnecessary work.
 - Use _modern_ PyO3 (never write code that isn't compatible with the
   recent `Bound` API)
 - Use _modern_ Python and the `uv` package manager.
 
 ## build commands
 
-- `uv sync && uv run maturin dev`: sync dependencies and build the
-  project with `maturin`
+- Run `uv run maturin dev --uv` to build the project.
+- Run `uv run --config-setting 'build-args=--profile=dev' pytest` to
+  test the project.
 
 ## format commands
 

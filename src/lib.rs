@@ -248,7 +248,7 @@ mod fhrs {
     /// optional weights
     #[pyfunction]
     #[pyo3(signature = (x, bins, range, weights=None))]
-    fn histogram_fixed<'py>(
+    fn fixed<'py>(
         py: Python<'py>,
         x: &Bound<'py, PyAny>,
         bins: usize,
@@ -256,7 +256,7 @@ mod fhrs {
         weights: Option<PyReadonlyArray1<'py, f64>>,
     ) -> PyResult<Py<PyAny>> {
         dispatch_histogram_fixed!(
-            py, x, bins, range, weights, f32, f64, i32, i64, u32, u64
+            py, x, bins, range, weights, f64, i64, u64, f32, i32, u32
         );
 
         Err(pyo3::exceptions::PyTypeError::new_err(
@@ -268,7 +268,7 @@ mod fhrs {
     /// optional weights
     #[pyfunction]
     #[pyo3(signature = (x, bins, weights=None))]
-    fn histogram_variable<'py>(
+    fn variable<'py>(
         py: Python<'py>,
         x: PyReadonlyArray1<'py, f64>,
         bins: PyReadonlyArray1<'py, f64>,
