@@ -43,7 +43,10 @@ where
         ))
 }
 
-fn rh1v(x: ArrayView1<f64>, edges: ArrayView1<f64>) -> Result<Array1<usize>> {
+fn rh1v<T>(x: ArrayView1<T>, edges: ArrayView1<f64>) -> Result<Array1<usize>>
+where
+    T: Copy + ToPrimitive + Send + Sync,
+{
     anyhow::ensure!(
         edges.len() >= 2,
         "edges array must have at least 2 elements"
@@ -57,27 +60,23 @@ fn rh1v(x: ArrayView1<f64>, edges: ArrayView1<f64>) -> Result<Array1<usize>> {
         .ok_or(anyhow::anyhow!("Can't slice edges array"))?;
 
     Ok(x.as_slice()
-        .ok_or(anyhow::anyhow!("Can't slice input array {x:?}"))?
+        .ok_or(anyhow::anyhow!("Can't slice input array"))?
         .par_chunks(chunk_size)
         .map(|chunk| {
             let mut local_hist = Array1::<usize>::zeros(nbins);
             for &value in chunk {
-                // binary search for bin index
+                let value_f64 =
+                    value.to_f64().expect("numeric conversion failed");
                 match edges_slice.binary_search_by(|edge| {
-                    edge.partial_cmp(&value)
+                    edge.partial_cmp(&value_f64)
                         .unwrap_or(std::cmp::Ordering::Less)
                 }) {
-                    // Ok for exact index; use left edge
                     Ok(idx) => {
                         if idx < nbins {
                             local_hist[idx] += 1;
                         }
                     }
-                    // Err for not found index, gives index of 1
-                    // higher (see
-                    // binary_search_by docs)
                     Err(idx) => {
-                        // between bins; use
                         if idx > 0 && idx <= nbins {
                             local_hist[idx - 1] += 1;
                         }
@@ -95,11 +94,14 @@ fn rh1v(x: ArrayView1<f64>, edges: ArrayView1<f64>) -> Result<Array1<usize>> {
         ))
 }
 
-fn rh1vw(
-    x: ArrayView1<f64>,
+fn rh1vw<T>(
+    x: ArrayView1<T>,
     w: ArrayView1<f64>,
     edges: ArrayView1<f64>,
-) -> Result<Array2<f64>> {
+) -> Result<Array2<f64>>
+where
+    T: Copy + ToPrimitive + Send + Sync,
+{
     anyhow::ensure!(
         x.len() == w.len(),
         "x and w arrays must have the same length"
@@ -122,17 +124,16 @@ fn rh1vw(
         .as_slice()
         .ok_or(anyhow::anyhow!("Can't slice input array w"))?;
 
-    // we're going to return a 2D array where the 0th dimension
-    // is size 2; the first dimension is for the counts and
-    // the second is for the variances.
     Ok(x_slice
         .par_chunks(chunk_size)
         .zip_eq(w_slice.par_chunks(chunk_size))
         .map(|(x_chunk, w_chunk)| {
             let mut local_hist = Array2::<f64>::zeros((nbins, 2));
             for (&value, &weight) in x_chunk.iter().zip(w_chunk.iter()) {
+                let value_f64 =
+                    value.to_f64().expect("numeric conversion failed");
                 match edges_slice.binary_search_by(|edge| {
-                    edge.partial_cmp(&value)
+                    edge.partial_cmp(&value_f64)
                         .unwrap_or(std::cmp::Ordering::Less)
                 }) {
                     Ok(idx) => {
@@ -221,6 +222,29 @@ mod fhrs {
 
     use super::*;
 
+    macro_rules! dispatch_histogram_variable {
+        ($py:expr, $x:expr, $edges:expr, $weights:expr, $($dtype:ty),+) => {
+            $(
+                if let Ok(arr) = $x.cast::<numpy::PyArray1<$dtype>>() {
+                    let x_readonly = arr.readonly();
+                    let x_view = x_readonly.as_array();
+
+                    return match $weights {
+                        Some(w) => {
+                            let w_view = w.as_array();
+                            let h = $py.detach(|| rh1vw(x_view, w_view, $edges))?;
+                            Ok(h.into_pyarray($py).into())
+                        }
+                        None => {
+                            let h = $py.detach(|| rh1v(x_view, $edges))?;
+                            Ok(h.into_pyarray($py).into())
+                        }
+                    };
+                }
+            )+
+        };
+    }
+
     macro_rules! dispatch_histogram_fixed {
         ($py:expr, $x:expr, $bins:expr, $range:expr, $weights:expr, $($dtype:ty),+) => {
             $(
@@ -270,24 +294,19 @@ mod fhrs {
     #[pyo3(signature = (x, bins, weights=None))]
     fn variable<'py>(
         py: Python<'py>,
-        x: PyReadonlyArray1<'py, f64>,
+        x: &Bound<'py, PyAny>,
         bins: PyReadonlyArray1<'py, f64>,
         weights: Option<PyReadonlyArray1<'py, f64>>,
     ) -> PyResult<Py<PyAny>> {
-        let x = x.as_array();
         let edges = bins.as_array();
 
-        match weights {
-            Some(w) => {
-                let w = w.as_array();
-                let h = py.detach(|| rh1vw(x, w, edges))?;
-                Ok(h.into_pyarray(py).into())
-            }
-            _ => {
-                let h = py.detach(|| rh1v(x, edges))?;
-                Ok(h.into_pyarray(py).into())
-            }
-        }
+        dispatch_histogram_variable!(
+            py, x, edges, weights, f64, i64, u64, f32, i32, u32
+        );
+
+        Err(pyo3::exceptions::PyTypeError::new_err(
+            "Unsupported dtype. Supported types: f32, f64, i32, i64, u32, u64",
+        ))
     }
 
     #[pymodule_init]
