@@ -310,7 +310,7 @@ mod fhrs {
     }
 
     #[pymodule_init]
-    fn init(_: &Bound<'_, PyModule>) -> PyResult<()> {
+    fn init(_m: &Bound<'_, PyModule>) -> PyResult<()> {
         let nt = rayon::current_num_threads();
         CURRENT_NUM_THREADS.set(nt).unwrap();
         Ok(())

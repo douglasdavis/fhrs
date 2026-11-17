@@ -11,6 +11,6 @@ crate-type = ["cdylib"]
 anyhow = "1"
 ndarray = { version = "0.17", features = ["rayon"] }
 num-traits = "0.2"
-numpy = "0.28"
-pyo3 = { version = "0.28", features = ["anyhow"] }
-rayon = "1.11"
+numpy = "0.30"
+pyo3 = { version = "0.30", features = ["anyhow"] }
+rayon = "1.12"

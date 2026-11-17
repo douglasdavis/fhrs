@@ -60,7 +60,6 @@ def fixed(
     TypeError
         If the dtype of *x* is not supported.
     """
-    ...
 
 @overload
 def variable(
@@ -107,4 +106,3 @@ def variable(
     TypeError
         If the dtype of *x* is not supported.
     """
-    ...

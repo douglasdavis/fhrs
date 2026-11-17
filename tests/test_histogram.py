@@ -1,8 +1,9 @@
-import fhrs
 import numpy as np
 import pygram11
 import pytest
 from numpy.testing import assert_allclose, assert_equal
+
+import fhrs
 
 SUPPORTED_DTYPES = [np.float64, np.float32, np.int64, np.int32, np.uint64, np.uint32]
 FLOAT_DTYPES = [np.float64, np.float32]
